@@ -1,0 +1,53 @@
+﻿<Window x:Class="NewsNetworkProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NewsNetworkProject"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel HorizontalAlignment="Center">
+        <WrapPanel HorizontalAlignment="Center"
+                   Margin="6">
+            <Button Width="100"
+                    Height="25"
+                    Content="Setup"
+                    Margin="5"/>
+            <Button Width="100"
+                    Height="25"
+                    Content="Connect"
+                    Margin="5"/>
+            
+            <Label x:Name="ConnectionLab"
+                   Content=""/>
+        </WrapPanel>
+        
+        <WrapPanel Width="800"
+                   HorizontalAlignment="Center">
+            <ScrollViewer Height="380"
+                          Width="350"
+                          VerticalScrollBarVisibility="Auto"
+                          Margin="20,0,15,0">
+            
+                <StackPanel x:Name="GroupListStackPanel">
+           
+                
+                </StackPanel>
+                        
+            </ScrollViewer>
+            
+            <ScrollViewer Height="380"
+                          Width="350"
+                          VerticalScrollBarVisibility="Auto"
+                          Margin="45,0,0,0">
+            
+                <StackPanel x:Name="HeadingListStackPanel">
+           
+                
+                </StackPanel>
+                        
+            </ScrollViewer>
+        </WrapPanel>
+        
+    </StackPanel>
+</Window>
