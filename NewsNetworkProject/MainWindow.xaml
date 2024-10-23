@@ -16,7 +16,8 @@
             <Button Width="100"
                     Height="25"
                     Content="Connect"
-                    Margin="5"/>
+                    Margin="5"
+                    Click="BtnConnect_OnClick"/>
             
             <Label x:Name="ConnectionLab"
                    Content=""/>

@@ -7,109 +7,41 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using NewsNetworkProject.Entity;
+using NewsNetworkProject.InterfaceAdapter;
 
 namespace NewsNetworkProject.Infrastructure;
 
-public class CreateConnection
+public class CreateConnection : ICreateConnection
 {
-    private static string url = "news.sunsite.dk";
-    private static  int port = 119;
+    // Hardcoded for now
+    private static string _url = "news.sunsite.dk";
+    private static  int _port = 119;
+    private string? _responseData;
 
     private NetworkStream _stream;
 
     private StreamReader _reader;
     private StreamWriter _writer;
     
-    private TcpClient client = new TcpClient(url, port);
+    private TcpClient client = new TcpClient(_url, _port);
     
-    public string Connect()
-    {
-        try
-        {
-            
-            byte[] bytes = System.Text.Encoding.ASCII.GetBytes("");
-            
-            _stream = client.GetStream();
-            _stream.Write(bytes, 0, bytes.Length);
-            _reader = new StreamReader(_stream);
-            bytes = new byte[256];
-
-            // String to store the response ASCII representation.
-            String responseData = String.Empty;
-
-            // Read the first batch of the TcpServer response bytes.
-            Int32 something = _stream.Read(bytes, 0, bytes.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(bytes, 0, something);
-
-            if (responseData.Substring(0,3) != "200") return "Connection Failed " + responseData.Substring(3);
-            
-            byte[] user = System.Text.Encoding.ASCII.GetBytes("AUTHINFO USER aleger01@easv365.dk\r\n");
-            
-            _stream = client.GetStream();
-            _stream.Write(user, 0, user.Length);
-            _reader = new StreamReader(_stream);
-            bytes = new byte[256];
-            
-            // Read the first batch of the TcpServer response bytes.
-            something = _stream.Read(bytes, 0, bytes.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(bytes, 0, something);
-            
-            MessageBox.Show(responseData.Substring(0,3));
-            
-            byte[] pass = System.Text.Encoding.ASCII.GetBytes("AUTHINFO pass acbf92\r\n");
-            
-            _stream = client.GetStream();
-            _stream.Write(pass, 0, pass.Length);
-            _reader = new StreamReader(_stream);
-            bytes = new byte[256];
-            
-            // Read the first batch of the TcpServer response bytes.
-            something = _stream.Read(bytes, 0, bytes.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(bytes, 0, something);
-            
-            MessageBox.Show(responseData.Substring(0,3));
-
-
-            return "Connected";
-
-
-        }
-        catch (System.Reflection.TargetInvocationException e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
-    
-    public string ConnectTest()
+    public string ConnectToServer()
     {
         try
         {
             // Initialize TcpClient and connect to the server
-            client = new TcpClient(url, port);
+            client = new TcpClient(_url, _port);
             _stream = client.GetStream();
             _reader = new StreamReader(_stream, Encoding.ASCII);
             _writer = new StreamWriter(_stream, Encoding.ASCII) { NewLine = "\r\n", AutoFlush = true };
 
             // Read server's initial response
-            string responseData = _reader.ReadLine();
-            if (responseData.Substring(0, 3) != "200")
-                return "Connection Failed: " + responseData.Substring(3);
-
-            // Send AUTHINFO USER command
-            _writer.WriteLine("AUTHINFO USER aleger01@easv365.dk");
-            responseData = _reader.ReadLine();
-            if (!responseData.StartsWith("381"))
-                return "Username not accepted: " + responseData;
-
-            // Send AUTHINFO PASS command
-            _writer.WriteLine("AUTHINFO PASS acbf92");
-            responseData = _reader.ReadLine();
-            if (!responseData.StartsWith("281"))
-                return "Password not accepted: " + responseData;
-
-            // Connection and authentication succeeded
-            return "Connected";
+             _responseData = _reader.ReadLine();
+            if (_responseData!.Substring(0, 3) != "200")
+                return "Connection Failed: " + _responseData.Substring(3);
+            
+            // Connection succeeded
+            return _responseData.Substring(0,3);
         }
         catch (Exception ex)
         {
@@ -118,9 +50,50 @@ public class CreateConnection
         }
     }
 
-    public List<Label> TestMethod()
+    public string PassUserInfo()
     {
-        List<Label> lableList = new List<Label>();
+        try
+        {
+            // Send AUTHINFO USER command
+            _writer.WriteLine("AUTHINFO USER aleger01@easv365.dk");
+            _responseData = _reader.ReadLine();
+            if (!_responseData!.StartsWith("381"))
+                return "Username not accepted: " + _responseData;
+            return _responseData.Substring(0, 3);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Error in PassUserInfo: " + e.Message);
+            return "Error : " + e.Message;
+        }
+    }
+
+    public string PassPasswordInfo()
+    {
+        try
+        {
+            // Send AUTHINFO PASS command
+            _writer.WriteLine("AUTHINFO PASS acbf92");
+            _responseData = _reader.ReadLine();
+            if (!_responseData!.StartsWith("281"))
+                return "Password not accepted: " + _responseData;
+            return _responseData.Substring(0, 3);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Error in PassPasswordInfo: " + e.Message);
+            return "Error : " + e.Message;
+        }
+    }
+
+    public List<string> TestMethod()
+    {
+        if (_writer == null || _reader == null)
+        {
+            throw new InvalidOperationException("The connection has not been established. Please connect to the server first.");
+        }
+        
+        List<string> groupList = new List<string>();
         try
         {
             // Send LIST command to the server
@@ -141,9 +114,7 @@ public class CreateConnection
                         break;
 
                     // Create object that can be displayed
-                    Label label = new Label();
-                    label.Content = line;
-                    lableList.Add(label);
+                    groupList.Add(line);
                 }
             }
             else
@@ -159,7 +130,7 @@ public class CreateConnection
         {
             Debug.WriteLine(e.Message);
         }
-        return lableList;
+        return groupList;
     }
 
     public void Disconnect()
