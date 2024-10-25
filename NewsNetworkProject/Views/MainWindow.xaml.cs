@@ -1,14 +1,8 @@
 ﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using NewsNetworkProject.Infrastructure;
+using NewsNetworkProject.Views;
 
 namespace NewsNetworkProject;
 
@@ -42,13 +36,27 @@ public partial class MainWindow : Window
                 Dispatcher.Invoke(() =>
                 {
                     ConnectionLab.Content = "Connected";
-                    foreach (var group in groupList)
+                    for (int i = 0; i < 1000; i++)
                     {
-                        Label lab = new Label { Content = group };
-                        GroupListStackPanel.Children.Add(lab);
+                        Label lab = new Label { Content = groupList[i] };
+                        GroupListView.Items.Add(lab);
                     }
                 });
+                
             }
         });
+    }
+
+    private void SetupView_OnClick(object sender, RoutedEventArgs e)
+    {
+        GettingHeadline gh = new GettingHeadline(_conn);
+        
+        foreach (var headline in gh.GettingHeadlineFromGroup(GroupListView.SelectedItem.ToString()))
+        {
+            HeadingListStackPanel.Children.Add( new Label { Content = headline.ToString() } );
+        }
+        
+        SetupWindow setup = new SetupWindow();
+        setup.Show();
     }
 }

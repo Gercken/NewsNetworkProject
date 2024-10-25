@@ -1,12 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using NewsNetworkProject.Entity;
 using NewsNetworkProject.InterfaceAdapter;
 
 namespace NewsNetworkProject.Infrastructure;
@@ -18,20 +14,32 @@ public class CreateConnection : ICreateConnection
     private static  int _port = 119;
     private string? _responseData;
 
-    private NetworkStream _stream;
+    private NetworkStream? _stream;
 
-    private StreamReader _reader;
-    private StreamWriter _writer;
+    private StreamReader? _reader;
+    private StreamWriter? _writer;
     
-    private TcpClient client = new TcpClient(_url, _port);
+    public TcpClient? _client;
+
+    public TcpClient Client
+    {
+        get
+        {
+            return _client;
+        }
+        set
+        {
+            _client = value;
+        }
+    }
     
     public string ConnectToServer()
     {
         try
         {
             // Initialize TcpClient and connect to the server
-            client = new TcpClient(_url, _port);
-            _stream = client.GetStream();
+            _client = new TcpClient(_url, _port);
+            _stream = _client.GetStream();
             _reader = new StreamReader(_stream, Encoding.ASCII);
             _writer = new StreamWriter(_stream, Encoding.ASCII) { NewLine = "\r\n", AutoFlush = true };
 
@@ -39,6 +47,8 @@ public class CreateConnection : ICreateConnection
              _responseData = _reader.ReadLine();
             if (_responseData!.Substring(0, 3) != "200")
                 return "Connection Failed: " + _responseData.Substring(3);
+            
+            
             
             // Connection succeeded
             return _responseData.Substring(0,3);
@@ -86,6 +96,7 @@ public class CreateConnection : ICreateConnection
         }
     }
 
+    // Needs to be moved to another class since it has nothing to do with creating the connection
     public List<string> TestMethod()
     {
         if (_writer == null || _reader == null)
@@ -101,8 +112,8 @@ public class CreateConnection : ICreateConnection
             _writer.Flush();
 
             // Read the server response
-            string responseData = _reader.ReadLine();
-            if (responseData.StartsWith("215"))
+            string? responseData = _reader.ReadLine();
+            if (responseData!.StartsWith("215"))
             {
                 Debug.WriteLine("Newsgroup list:");
 
@@ -112,9 +123,8 @@ public class CreateConnection : ICreateConnection
                 {
                     if (line == ".")
                         break;
-
-                    // Create object that can be displayed
-                    groupList.Add(line);
+                    
+                    groupList.Add(GetNewsGroup(line));
                 }
             }
             else
@@ -133,6 +143,12 @@ public class CreateConnection : ICreateConnection
         return groupList;
     }
 
+    private string GetNewsGroup(string line)
+    {
+        string[] result = line.Split(" ");
+        return result[0];
+    }
+
     public void Disconnect()
     {
         // Close the connection
@@ -143,7 +159,7 @@ public class CreateConnection : ICreateConnection
             _writer.Close();
             _reader.Close();
             _stream.Close();
-            client.Close();
+            _client.Close();
             Debug.WriteLine("Disconnected from the server.");
         }
     }

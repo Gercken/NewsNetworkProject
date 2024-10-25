@@ -3,11 +3,9 @@ C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\bin\Debug\net
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\bin\Debug\net8.0-windows\NewsNetworkProject.runtimeconfig.json
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\bin\Debug\net8.0-windows\NewsNetworkProject.dll
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\bin\Debug\net8.0-windows\NewsNetworkProject.pdb
-C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject_MarkupCompile.cache
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject_MarkupCompile.lref
-C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.g.resources
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.AssemblyInfoInputs.cache
@@ -39,3 +37,8 @@ C:\Users\ajge1\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net
 C:\Users\ajge1\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.pdb
 C:\Users\ajge1\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.genruntimeconfig.cache
 C:\Users\ajge1\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\ref\NewsNetworkProject.dll
+C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\NewsNetworkProject.sourcelink.json
+C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\Views\MainWindow.baml
+C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
+C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\Views\SetupWindow.g.cs
+C:\Users\AlexG\RiderProjects\NewsNetworkProject\NewsNetworkProject\obj\Debug\net8.0-windows\Views\SetupWindow.baml
